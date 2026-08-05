@@ -62,6 +62,19 @@ sobre este directorio:
 | `theme-factory` | 10 temas predefinidos para slides, docs y páginas HTML |
 | `webapp-testing` | Probar apps web locales con Playwright, screenshots y logs |
 
+Más una skill propia, escrita para este repositorio:
+
+| Skill | Para qué sirve |
+| --- | --- |
+| `apple-control` | Operar Recordatorios, Calendario, Notas, Mensajes, Música y Atajos vía `osascript` |
+
+`apple-control` **solo funciona en macOS**. En sesiones web/iPad no hay
+`osascript` y la propia skill indica que se diga así en vez de intentarlo. Está
+escrita desde Linux, de modo que sus recetas de AppleScript están revisadas
+—bloques balanceados, sin interpolación de shell, fechas construidas por campos
+para evitar el desbordamiento de día— pero **no ejecutadas**. La primera pasada
+real en un Mac es la que las valida.
+
 No se vendorizaron `docx`, `pdf`, `pptx`, `xlsx`, `canvas-design`,
 `skill-creator`, `web-artifacts-builder` ni `claude-api`: ya vienen activadas en
 la cuenta y duplicarlas provocaría colisiones de nombre y ~10 MB de peso muerto.
