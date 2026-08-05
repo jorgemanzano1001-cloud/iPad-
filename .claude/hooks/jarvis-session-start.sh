@@ -14,6 +14,11 @@ PERSONA="$DIR/jarvis/PERSONA.md"
 # Sin persona no hay nada que inyectar: salir en silencio deja la sesión intacta.
 [ -r "$PERSONA" ] || exit 0
 
+# Sin python3 el heredoc de abajo abortaría con 127, y como es el último comando
+# ese código sería el del hook. Mejor renunciar a la persona que romper el
+# arranque de la sesión.
+command -v python3 >/dev/null 2>&1 || exit 0
+
 python3 - "$PERSONA" <<'PY'
 import json, sys
 
