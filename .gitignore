@@ -1,0 +1,27 @@
+# Claude Code — machine-local overrides, never committed
+.claude/settings.local.json
+.claude/.credentials.json
+.claude/projects/
+.claude/shell-snapshots/
+.claude/sessions/
+.claude/todos/
+.claude/statsig/
+.claude/history.jsonl
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Common build/dependency output
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+build/
+.env
+.env.local
