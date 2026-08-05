@@ -127,6 +127,13 @@ interrupciones por permisos. Nada que escriba o borre está pre-aprobado.
     instrucciones adaptadas a un repositorio de configuración (shell, JSON,
     hooks) en vez de la revisión genérica de código.
 
-  Ambos comprueban antes que exista el secreto `ANTHROPIC_API_KEY`. Si falta, el
-  paso se omite y el check queda en verde con una nota en el resumen del run, en
-  lugar de fallar en rojo.
+  Ambos aceptan cualquiera de las dos credenciales, en este orden:
+
+  1. `CLAUDE_CODE_OAUTH_TOKEN` — token de la suscripción de Claude, generado con
+     `claude setup-token` en una sesión interactiva. Es la vía preferida: no
+     consume créditos de API.
+  2. `ANTHROPIC_API_KEY` — clave de API, facturada aparte.
+
+  Si no hay ninguna de las dos, el paso se omite y el check queda en verde con
+  una nota en el resumen del run, en lugar de fallar en rojo. Los secretos se
+  leen siempre por `env`, nunca interpolados dentro de un `run:`.

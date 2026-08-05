@@ -34,14 +34,16 @@ jobs:
           fetch-depth: 1
 
       # Sin credencial la acción falla y pinta el check en rojo. Preferimos
-      # saltarla y dejar constancia en el resumen del run.
+      # saltarla y dejar constancia en el resumen del run. Vale cualquiera de
+      # las dos: el token de la suscripción o la clave de API.
       - name: Comprobar credencial
         id: guard
         env:
-          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          APIKEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          if [ -z "$KEY" ]; then
-            echo "ANTHROPIC_API_KEY no está configurado en los secretos del repositorio; se omite." >> "$GITHUB_STEP_SUMMARY"
+          if [ -z "$OAUTH" ] && [ -z "$APIKEY" ]; then
+            echo "Falta credencial: define el secreto CLAUDE_CODE_OAUTH_TOKEN (\`claude setup-token\`) o ANTHROPIC_API_KEY. Se omite el paso." >> "$GITHUB_STEP_SUMMARY"
             echo "ok=false" >> "$GITHUB_OUTPUT"
           else
             echo "ok=true" >> "$GITHUB_OUTPUT"
@@ -50,9 +52,9 @@ jobs:
       - name: Run Claude Code
         if: steps.guard.outputs.ok == 'true'
         uses: anthropics/claude-code-action@v1
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   # Revisión automática al abrir o actualizar un pull request.
@@ -73,10 +75,11 @@ jobs:
       - name: Comprobar credencial
         id: guard
         env:
-          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          APIKEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          if [ -z "$KEY" ]; then
-            echo "ANTHROPIC_API_KEY no está configurado en los secretos del repositorio; se omite la revisión." >> "$GITHUB_STEP_SUMMARY"
+          if [ -z "$OAUTH" ] && [ -z "$APIKEY" ]; then
+            echo "Falta credencial: define el secreto CLAUDE_CODE_OAUTH_TOKEN (\`claude setup-token\`) o ANTHROPIC_API_KEY. Se omite la revisión." >> "$GITHUB_STEP_SUMMARY"
             echo "ok=false" >> "$GITHUB_OUTPUT"
           else
             echo "ok=true" >> "$GITHUB_OUTPUT"
@@ -85,9 +88,9 @@ jobs:
       - name: Revisión automática
         if: steps.guard.outputs.ok == 'true'
         uses: anthropics/claude-code-action@v1
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           track_progress: true
           prompt: |
