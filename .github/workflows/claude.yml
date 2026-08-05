@@ -108,9 +108,10 @@ jobs:
                Comprueba el comillado de variables, las rutas relativas frágiles
                y que degraden en silencio (exit 0) cuando falte un fichero o no
                haya red, en vez de abortar.
-            2. JSON: sintaxis válida y claves que existan de verdad en el esquema
-               de settings de Claude Code. Una clave inventada se ignora en
-               silencio y el fallo pasa desapercibido.
+            2. JSON: sintaxis válida y coherencia interna. Señala como dudosa
+               cualquier clave que no reconozcas — una clave inventada se ignora
+               en silencio y el fallo pasa desapercibido — pero preséntala como
+               sospecha, no como error confirmado.
             3. Hooks: que la salida de SessionStart tenga la forma que Claude
                Code espera (hookSpecificOutput con hookEventName y
                additionalContext).
@@ -119,7 +120,14 @@ jobs:
             5. Documentación: que CLAUDE.md siga describiendo lo que el código
                hace realmente.
 
-            No comentes cuestiones de estilo menores. Si no encuentras nada
+            No tienes acceso a internet: la acción bloquea WebFetch y WebSearch.
+            No gastes turnos intentando descargar esquemas ni documentación.
+            Trabaja solo con lo que hay en el repositorio.
+
+            Publica los hallazgos SIEMPRE, como último paso y aunque no hayas
+            podido completar todas las comprobaciones: vale más un informe
+            parcial diciendo qué quedó sin revisar que ningún informe. No
+            comentes cuestiones de estilo menores. Si no encuentras nada
             relevante, dilo en un solo comentario breve en vez de inventar
             hallazgos.
 
