@@ -121,5 +121,12 @@ interrupciones por permisos. Nada que escriba o borre está pre-aprobado.
 - Las preferencias locales van en `.claude/settings.local.json`, que está en
   `.gitignore` y nunca se commitea.
 - Los commits llevan trailer `Co-Authored-By` (`includeCoAuthoredBy: true`).
-- `.github/workflows/claude.yml` ejecuta la Claude Code Action al comentar en
-  issues y en revisiones de PR.
+- `.github/workflows/claude.yml` tiene dos jobs:
+  - `mention` — responde a `@claude` en comentarios, issues y revisiones.
+  - `review` — revisa automáticamente cada PR que se abre o se actualiza, con
+    instrucciones adaptadas a un repositorio de configuración (shell, JSON,
+    hooks) en vez de la revisión genérica de código.
+
+  Ambos comprueban antes que exista el secreto `ANTHROPIC_API_KEY`. Si falta, el
+  paso se omite y el check queda en verde con una nota en el resumen del run, en
+  lugar de fallar en rojo.
